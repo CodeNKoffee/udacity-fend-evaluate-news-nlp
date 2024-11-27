@@ -4,9 +4,15 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 dotenv.config();
 
+
 const app = express();
 
 const cors = require('cors');
+
+// You could call it meaingCloudApi, or anything else
+var meaingCloudApi = new MeaningCloud({
+  application_key: process.env.MEANING_CLOUD_API_KEY
+});
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -17,7 +23,7 @@ console.log(__dirname);
 
 
 app.get('/', function (req, res) {
-    res.send("This is the server API page, you may access its services via the client app.");
+  res.send("This is the server API page, you may access its services via the client app.");
 });
 
 
@@ -27,7 +33,7 @@ app.get('/', function (req, res) {
 
 // Designates what port the app will listen to for incoming requests
 app.listen(8000, function () {
-    console.log('Example app listening on port 8000!');
+  console.log('Example app listening on port 8000!');
 });
 
 
