@@ -1,28 +1,53 @@
-// Replace checkForName with a function that checks the URL
-import { checkForName } from "./nameChecker";
+// formHandler.js
 
-// If working on Udacity workspace, update this with the Server API URL e.g. `https://wfkdhyvtzx.prod.udacity-student-workspaces.com/api`
-// const serverURL = 'https://wfkdhyvtzx.prod.udacity-student-workspaces.com/api'
-const serverURL = "https://localhost:8000/api";
+/**
+ * Checks if a URL is valid.
+ * @param {string} url - The URL to check.
+ * @returns {boolean} - True if the URL is valid, false otherwise.
+ */
+export function checkForURL(url) {
+  try {
+    new URL(url);
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
 
-const form = document.getElementById("urlForm");
-form.addEventListener("submit", handleSubmit);
-
-function handleSubmit(event) {
+/**
+ * Handles the form submission.
+ * Prevents default form submission, validates the URL, and sends a request to the server.
+ * @param {Event} event - The submit event.
+ */
+export function handleSubmit(event) {
   event.preventDefault();
 
   // Get the URL from the input field
-  const formText = document.getElementById("name").value;
-
-  // This is an example code that checks the submitted name. You may remove it from your code
-  checkForName(formText);
+  const formText = document.getElementById('name').value;
 
   // Check if the URL is valid
+  if (checkForURL(formText)) {
+    console.log("::: Form Submitted :::");
 
-  // If the URL is valid, send it to the server using the serverURL constant above
+    // Send a POST request to the server with the URL
+    fetch('http://localhost:8080/api', { 
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ url: formText })
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Update the UI with the results from the server
+      document.getElementById('results').innerHTML = JSON.stringify(data); 
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+
+  } else {
+    alert('Please enter a valid URL');
+  }
 }
-
-// Function to send data to the server
-
-// Export the handleSubmit function
-export { handleSubmit };

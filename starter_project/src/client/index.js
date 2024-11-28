@@ -1,9 +1,13 @@
-// js files
-import { handleSubmit } from './js/formHandler'
+// Import necessary modules
+import { handleSubmit } from "./js/formHandler";
 
+// Event listener for form submission
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('urlForm');
+  if (form) {
+    form.addEventListener('submit', handleSubmit);
+  }
+});
 
-
-alert("I EXIST")
-console.log("CHANGE!!");
-
-// sass files
+// Export for potential use in testing
+export { handleSubmit };
