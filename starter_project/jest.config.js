@@ -1,7 +1,7 @@
 module.exports = {
-  testEnvironment: 'jsdom',  // Change to jsdom for browser-like testing
+  testEnvironment: 'jsdom', 
   setupFilesAfterEnv: [
-    '<rootDir>/jest.setup.js'  // Create a separate setup file
+    '<rootDir>/jest.setup.js' 
   ],
   modulePathIgnorePatterns: ['<rootDir>/dist/'],
   transform: {

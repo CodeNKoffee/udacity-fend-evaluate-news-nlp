@@ -50,7 +50,6 @@ describe('Form Handler', () => {
     //   })
     // );
 
-    // You can add other assertions here if needed, e.g., check if fetch was called at all
     expect(global.fetch).toHaveBeenCalled(); 
   });
 });
