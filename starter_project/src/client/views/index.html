@@ -2,37 +2,42 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8" />
-    <title>Test</title>
+    <title>Evaluate News NLP</title>
+    <link rel="stylesheet" href="../styles/resets.css" />
+    <link rel="stylesheet" href="../styles/base.css" />
+    <link rel="stylesheet" href="../styles/header.css" />
+    <link rel="stylesheet" href="../styles/form.css" />
+    <link rel="stylesheet" href="../styles/footer.css" />
   </head>
-
   <body>
     <header>
-      <div class="">Logo</div>
-      <div class="">navigation</div>
+      <div class="logo">Evaluate News NLP</div>
+      <nav>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </nav>
     </header>
 
     <main>
-      <section>
+      <section class="form-section">
+        <h1>Enter URL for Sentiment Analysis</h1>
         <form id="urlForm">
-          <input
-            id="name"
-            type="text"
-            name="url"
-            placeholder="Enter URL"
-            required
-          />
+          <input id="name" type="text" name="url" placeholder="Enter URL" required />
           <button id="submitButton" type="submit">Submit</button>
         </form>
       </section>
 
-      <section>
+      <section class="results-section">
         <strong>Form Results:</strong>
         <div id="results"></div>
       </section>
     </main>
 
     <footer>
-      <p>This is a footer</p>
+      <p>&copy; 2024 Evaluate News NLP. All rights reserved.</p>
     </footer>
   </body>
 </html>
