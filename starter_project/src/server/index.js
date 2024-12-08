@@ -1,22 +1,23 @@
-const path = require('path');
+// Import necessary packages and modules
 const express = require('express');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const cors = require('cors');
-const MeaningCloud = require('meaning-cloud');
+
+// Dynamic import for node-fetch
+let fetch;
+(async () => {
+  fetch = (await import('node-fetch')).default;
+})();
 
 // Load environment variables
 dotenv.config();
 
+// Log the API key for debugging purposes
+console.log('MeaningCloud API Key (on startup):', process.env.MEANING_CLOUD_API_KEY);
+
 // Create Express app
 const app = express();
-
-// Configure MeaningCloud API client
-const meaningCloudApi = new MeaningCloud({
-  application_key: process.env.MEANING_CLOUD_API_KEY,
-  secure: true,             // HTTPS or HTTPS. Optional, true by default.
-  uri: 'custom-uri'         // URI to create the API endpoints. Optional.
-});
 
 // Middleware
 app.use(cors());
@@ -30,6 +31,7 @@ app.get('/', function (req, res) {
 
 // POST Route for URL Analysis
 app.post('/api/analyze', async (req, res) => {
+  console.log('MeaningCloud API Key (on request):', process.env.MEANING_CLOUD_API_KEY); // Log the API key on each request
   try {
     const { url } = req.body;
 
@@ -39,15 +41,16 @@ app.post('/api/analyze', async (req, res) => {
     }
 
     // Call MeaningCloud API for URL analysis
-    const meaningCloudResponse = await analyzeSentiment(url);
+    const response = await fetch(`https://api.meaningcloud.com/sentiment-2.1?key=${process.env.MEANING_CLOUD_API_KEY}&lang=en&url=${encodeURIComponent(url)}`);
+    const data = await response.json();
 
     // Return analyzed results
     res.json({
       url: url,
-      sentiment: meaningCloudResponse.score_tag,
-      confidence: meaningCloudResponse.confidence,
-      irony: meaningCloudResponse.irony,
-      subjectivity: meaningCloudResponse.subjectivity
+      sentiment: data.score_tag,
+      confidence: data.confidence,
+      irony: data.irony,
+      subjectivity: data.subjectivity
     });
   } catch (error) {
     console.error('URL Analysis Error:', error);
@@ -66,19 +69,6 @@ function isValidURL(url) {
   } catch (error) {
     return false;
   }
-}
-
-// MeaningCloud Sentiment Analysis Helper
-async function analyzeSentiment(url) {
-  return new Promise((resolve, reject) => {
-    meaningCloudApi.sentiment({
-      url: url,
-      lang: 'en'
-    }, (error, response) => {
-      if (error) return reject(error);
-      resolve(response);
-    });
-  });
 }
 
 // Start server if not being tested
